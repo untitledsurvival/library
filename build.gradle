@@ -1,0 +1,58 @@
+group 'com.untitledsurvival.lib'
+version '1.0'
+
+allprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        // spigot api (use BuildTools --rev 1.18 to get in Maven Local)
+        compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+        compileOnly 'org.spigotmc:spigot:1.18-R0.1-SNAPSHOT'
+
+        // lombok for life
+        compileOnly 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.22'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    jar {
+        // compile all implementation in dependencies into jar
+        from {
+            configurations.runtimeClasspath.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+    }
+}
+
+subprojects {
+    // setup all the subprojects to be named correctly
+    archivesBaseName = "${rootProject.name}-${project.name}"
+}
+
+rootProject.build.finalizedBy {
+    // when `gradlew build` is called set all the subprojects
+    // up to be cleaned afterward (excluding when the :projectName:build is called)
+
+    subprojects {
+        build.finalizedBy 'clean'
+    }
+}
+
+dependencies {
+    // implement each subprojects into the root project to ensure it's built
+    subprojects.forEach { implementation it }
+}
