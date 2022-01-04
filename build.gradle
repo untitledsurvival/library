@@ -1,5 +1,26 @@
-group 'com.untitledsurvival.lib'
+plugins {
+    id 'java'
+}
+
+group 'com.untitledsurvival.lib.plugin'
 version '1.0'
+
+archivesBaseName = "${project.name}-plugin"
+
+task buildLib {
+    group 'build'
+
+    doLast {
+        archivesBaseName = project.name
+
+        // exclude all of the plugin code (from this module)
+        sourceSets.main {
+            java.srcDirs = resources.srcDirs = []
+        }
+    }
+
+    finalizedBy build
+}
 
 allprojects {
     apply plugin: 'java'
@@ -21,19 +42,17 @@ allprojects {
         testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+        testImplementation 'junit:junit:4.13.2'
     }
 
     test {
-        useJUnitPlatform()
+        useJUnit()
     }
 
-    jar {
+    jar.from {
         // compile all implementation in dependencies into jar
-        from {
-            configurations.runtimeClasspath.collect {
-                it.isDirectory() ? it : zipTree(it)
-            }
+        configurations.runtimeClasspath.collect{
+            it.isDirectory() ? it : zipTree(it)
         }
     }
 }
@@ -41,6 +60,11 @@ allprojects {
 subprojects {
     // setup all the subprojects to be named correctly
     archivesBaseName = "${rootProject.name}-${project.name}"
+
+    // all projects that are not core depend on core
+    if (project.name != 'core') {
+        dependencies.implementation project(':core')
+    }
 }
 
 rootProject.build.finalizedBy {
@@ -48,11 +72,15 @@ rootProject.build.finalizedBy {
     // up to be cleaned afterward (excluding when the :projectName:build is called)
 
     subprojects {
-        build.finalizedBy 'clean'
+        build.finalizedBy clean
     }
 }
 
 dependencies {
     // implement each subprojects into the root project to ensure it's built
     subprojects.forEach { implementation it }
+}
+
+processResources.filesMatching('plugin.yml') {
+    expand(name: project.name, version: version, group: project.group)
 }

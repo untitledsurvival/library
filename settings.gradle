@@ -1,3 +1,4 @@
 rootProject.name = 'untitledlib'
-include 'plugin'
 
+include 'lang'
+include 'core'
