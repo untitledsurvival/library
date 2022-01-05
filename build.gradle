@@ -7,21 +7,6 @@ version '1.0'
 
 archivesBaseName = "${project.name}-plugin"
 
-task buildLib {
-    group 'build'
-
-    doLast {
-        archivesBaseName = project.name
-
-        // exclude all of the plugin code (from this module)
-        sourceSets.main {
-            java.srcDirs = resources.srcDirs = []
-        }
-    }
-
-    finalizedBy build
-}
-
 allprojects {
     apply plugin: 'java'
 
@@ -74,6 +59,21 @@ subprojects {
     if (project.name != 'core') {
         dependencies.implementation project(':core')
     }
+}
+
+task buildLib(type: Jar) {
+    group 'build'
+
+    doLast {
+        archivesBaseName = project.name
+
+        // exclude all of the plugin code (from this module)
+        sourceSets.main {
+            java.srcDirs = resources.srcDirs = []
+        }
+    }
+
+    finalizedBy buildFat
 }
 
 dependencies {
