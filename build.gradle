@@ -49,11 +49,20 @@ allprojects {
         useJUnit()
     }
 
-    jar.from {
-        // compile all implementation in dependencies into jar
-        configurations.runtimeClasspath.collect{
-            it.isDirectory() ? it : zipTree(it)
+    // place the fat build into its own task
+    // so that dependencies aren't built into each jar file
+    // causing duplicate classes and overlaps
+    task buildFat(type: Jar) {
+        group 'build'
+
+        from {
+            // compile all implementation in dependencies into jar
+            configurations.runtimeClasspath.collect{
+                it.isDirectory() ? it : zipTree(it)
+            }
         }
+
+        with jar
     }
 }
 
@@ -64,15 +73,6 @@ subprojects {
     // all projects that are not core depend on core
     if (project.name != 'core') {
         dependencies.implementation project(':core')
-    }
-}
-
-rootProject.build.finalizedBy {
-    // when `gradlew build` is called set all the subprojects
-    // up to be cleaned afterward (excluding when the :projectName:build is called)
-
-    subprojects {
-        build.finalizedBy clean
     }
 }
 
