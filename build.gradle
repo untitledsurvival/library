@@ -1,14 +1,19 @@
+//file:noinspection GroovyAssignabilityCheck
+
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
-group 'com.untitledsurvival.lib.plugin'
 version '1.0'
 
 archivesBaseName = "${project.name}-plugin"
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    group 'com.untitledsurvival'
 
     repositories {
         mavenCentral()
@@ -17,7 +22,6 @@ allprojects {
 
     dependencies {
         // spigot api (use BuildTools --rev 1.18 to get in Maven Local)
-        compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
         compileOnly 'org.spigotmc:spigot:1.18-R0.1-SNAPSHOT'
 
         // lombok for life
@@ -48,6 +52,16 @@ allprojects {
         }
 
         with jar
+    }
+
+    publishing.publications {
+        maven(MavenPublication) {
+            // rename the root project to be 'plugin' as its fat jar includes everything
+            if (project == rootProject) artifactId = 'plugin'
+
+            // exclude all yml files from published fat jars
+            artifact buildFat { exclude '*.yml' }
+        }
     }
 }
 
