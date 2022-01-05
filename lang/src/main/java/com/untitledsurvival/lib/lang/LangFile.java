@@ -1,5 +1,6 @@
 package com.untitledsurvival.lib.lang;
 
+import com.untitledsurvival.lib.lang.markdown.Markdown;
 import com.untitledsurvival.lib.lang.placeholder.PlaceholderAPI;
 import lombok.Getter;
 import lombok.NonNull;
@@ -7,7 +8,6 @@ import lombok.SneakyThrows;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
