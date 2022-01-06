@@ -2,3 +2,4 @@ rootProject.name = 'untitledlib'
 
 include 'lang'
 include 'core'
+include 'scoreboard'
