@@ -39,6 +39,7 @@ public class LangFile extends YamlConfiguration {
         File file = new File(plugin.getDataFolder(), name);
         if (file.exists()) {
             load(file);
+            return;
         }
 
         InputStream resource = plugin.getResource(name);
