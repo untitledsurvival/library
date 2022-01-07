@@ -1,5 +1,8 @@
 package com.untitledsurvival.lib.lang.placeholder;
 
+import com.untitledsurvival.lib.lang.placeholder.builtin.PlayerPlaceholder;
+import com.untitledsurvival.lib.lang.placeholder.builtin.TimePlaceholder;
+import com.untitledsurvival.lib.lang.placeholder.builtin.wildcard.ServerPlaceholder;
 import com.untitledsurvival.lib.lang.placeholder.shorthands.PlayerShorthand;
 import com.untitledsurvival.lib.lang.placeholder.shorthands.ShorthandBase;
 import lombok.Getter;
@@ -21,7 +24,7 @@ public class PlaceholderAPI {
     @Getter private static final Map<String, Placeholder<?>> namespacePlaceholders = new HashMap<>();
 
     static {
-        register(eventStack, basePlaceholder);
+        register(eventStack, basePlaceholder, new TimePlaceholder(), new PlayerPlaceholder(), new ServerPlaceholder());
     }
 
     public static void register(Placeholder<?>... additions) {
