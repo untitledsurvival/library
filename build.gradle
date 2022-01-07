@@ -60,7 +60,7 @@ allprojects {
             if (project == rootProject) artifactId = 'plugin'
 
             // exclude all yml files from published fat jars
-            artifact buildFat { exclude '*.yml' }
+            artifact buildFat
         }
     }
 }
