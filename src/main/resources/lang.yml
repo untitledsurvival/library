@@ -1,1 +1,13 @@
-hello: '%event:plugin% is enabled and available'
+usage: '&cYou use it like this: %usage%'
+not_found: '&cNo such thing exists!'
+
+hello: '%plugin% is enabled and available'
+
+commands:
+  config:
+    reload: '&aReloading the config.json file'
+    invalid: '&cThere is no path in the config matching %path%'
+    data_type_error: '&cInvalid input value for %path% which has datatype of %datatype%'
+    updated: '&7Successfully set value at&a %path%&7 to &2%value%'
+    current: '&7The current value at path&a %path%&7 is &2%value%'
+    saved: '&7Saved&a all changes&7 made this session'

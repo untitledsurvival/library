@@ -1,10 +1,11 @@
 package com.untitledsurvival.lib.lang.placeholder.builtin;
 
 import com.untitledsurvival.lib.lang.placeholder.Placeholder;
+import lombok.NonNull;
 
 public class TimePlaceholder implements Placeholder<TimePlaceholder.Time> {
     @Override
-    public String apply(Time time, String placeholderName) {
+    public String apply(Time time, @NonNull String placeholderName) {
         long format = switch (placeholderName) {
             case "days" -> time.days;
             case "hours" -> time.hours;

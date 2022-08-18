@@ -1,6 +1,7 @@
 package com.untitledsurvival.lib.lang.placeholder.builtin;
 
 import com.untitledsurvival.lib.lang.placeholder.Placeholder;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerPlaceholder implements Placeholder<Player> {
     @Override
-    public String apply(Player player, String placeholderName) {
+    public String apply(Player player, @NonNull String placeholderName) {
         return switch (placeholderName) {
             case "name" -> player.getName();
             case "gamemode" -> player.getGameMode().toString();

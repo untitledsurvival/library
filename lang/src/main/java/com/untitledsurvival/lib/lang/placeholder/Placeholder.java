@@ -17,9 +17,11 @@ public interface Placeholder<T> {
 
     interface Wildcard extends Placeholder<Object> {
         @Override
-        default boolean allowNull() {
-            return true;
+        default String apply(Object object, @NonNull String placeholderName) {
+            return apply(placeholderName);
         }
+
+        String apply(@NonNull String placeholderName);
 
         @Override
         default Class<Object> getType() {

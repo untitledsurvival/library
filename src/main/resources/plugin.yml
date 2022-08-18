@@ -9,3 +9,8 @@ commands:
     aliases: [ 'md' ]
     usage: '/markdown'
     permission: 'untitledlib.markdown'
+
+  config:
+    aliases: [ 'cfg' ]
+    usage: '/config <plugin> <update | save | reload> [<setting> <value>]'
+    permission: 'untitledlib.config'

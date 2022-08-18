@@ -1,23 +1,24 @@
 package com.untitledsurvival.lib.plugin;
 
 import com.untitledsurvival.lib.UntitledLib;
-import com.untitledsurvival.lib.lang.LangFile;
-import com.untitledsurvival.lib.lang.placeholder.PlaceholderAPI;
+import com.untitledsurvival.lib.lang.utils.PluginResource;
+import com.untitledsurvival.lib.plugin.commands.ConfigManager;
 import com.untitledsurvival.lib.plugin.commands.MarkdownTest;
 import com.untitledsurvival.lib.plugin.utils.OnlinePlayerMap;
 import com.untitledsurvival.lib.scoreboard.ScoreboardAPI;
 import lombok.Getter;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class UntitledLibPlugin extends JavaPlugin {
-    @Getter private static LangFile lang;
+    @Getter private static PluginResource lang;
 
     @Override
     public void onEnable() {
         // let the core know the plugin is available
         UntitledLib.setPlugin(this);
 
-        lang = new LangFile(this, "lang.yml");
+        lang = new PluginResource(this, "lang.yml");
 
         // register the player map
         UntitledLib.register(new OnlinePlayerMap.PlayerMapModule());
@@ -25,13 +26,21 @@ public class UntitledLibPlugin extends JavaPlugin {
 
         getCommand("markdown").setExecutor(new MarkdownTest());
 
+        ConfigManager manager = new ConfigManager();
+        PluginCommand configCommand = getCommand("config");
+
+        configCommand.setExecutor(manager);
+        configCommand.setTabCompleter(manager);
+
         // send a demo message
         demoLog();
     }
 
     private void demoLog() {
-        PlaceholderAPI.getEventStack().push("plugin", getName());
-        getLogger().info(lang.pFormat("hello"));
+        getLogger().info(lang.fmt("hello")
+                        .constant("plugin", this.getName())
+                        .format()
+                        .toString());
     }
 
     @Override

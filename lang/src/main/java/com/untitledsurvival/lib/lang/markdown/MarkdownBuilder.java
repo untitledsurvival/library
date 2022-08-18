@@ -72,16 +72,17 @@ public class MarkdownBuilder {
             return;
         }
 
+        complete();
+
         // if it's not a formatting code then we reset all previous
         if (color.getColor() != null || color.equals(ChatColor.RESET)) {
-            complete();
-
             currentComp.setColor(color);
             retention = FormatRetention.NONE;
 
             return;
         }
 
+        retention = FormatRetention.FORMATTING;
         handleFormatting(color);
     }
 
